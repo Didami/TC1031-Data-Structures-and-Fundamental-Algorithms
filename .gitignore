@@ -1,0 +1,11 @@
+# C++ build artifacts
+build/
+
+# Debug symbols
+*.dSYM/
+
+# Object files
+*.o
+
+# macOS
+.DS_Store

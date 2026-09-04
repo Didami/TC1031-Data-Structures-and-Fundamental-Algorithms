@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C++: Compile",
+            "type": "shell",
+            "command": "/bin/zsh",
+            "args": [
+                "-c",
+                "mkdir -p \"${workspaceFolder}/build\" && exec /usr/bin/clang++ -std=c++17 -g \"${file}\" -o \"${workspaceFolder}/build/${fileBasenameNoExtension}\""
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
