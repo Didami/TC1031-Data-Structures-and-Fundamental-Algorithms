@@ -17,7 +17,7 @@ Process of locating a specific element or item within a collection of data. This
 
 e.g.
 
-```
+```cpp
 int linearSearch(vector<int> &nums, int target) {
     for (int i = 0; i < nums.size(); i++) {
         if (nums[i] == target) return i;
@@ -45,7 +45,7 @@ Complexity: `O(n)`
 
 e.g.
 
-```
+```cpp
 int binarySearch(vector<int> &nums, int target) {
     int low = 0;
     int high = nums.size() - 1;

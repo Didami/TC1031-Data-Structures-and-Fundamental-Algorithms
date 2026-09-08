@@ -8,6 +8,7 @@ Repository containing my class notes, exercises, examples, and implementations f
 
 - Data Structures
 - Searching Algorithms
+- Sorting Algorithms
 - Recursive Functions
 - Algorithm Complexity
 - Activities and exercises

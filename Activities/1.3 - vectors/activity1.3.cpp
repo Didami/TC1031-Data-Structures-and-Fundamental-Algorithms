@@ -38,7 +38,7 @@ class Track {
 void saveTracks(vector<Track> &tracks) {
     ofstream file("./tracks.txt");
 
-    for (Track &track : tracks) {
+    for (Track track : tracks) {
         track.save(file);
     }
 
@@ -106,14 +106,20 @@ int main() {
 
             case 2: {
                 // Modify
+                Track track = tracks[index];
+                cout << "TRACKS: " << endl;
+
+                for (int i = 0; i < tracks.size(); i++) {
+                    cout << i << ": ";
+                    tracks[i].print();
+                }
+
                 cout << "Enter index: ";
                 cin >> index;
 
-                Track track = tracks[index];
-                cout << "TRACK TO EDIT: ";
-                track.print();
                 Track modified = inputTrack();
-                tracks.push_back(modified);
+                tracks[index] = (modified);
+
                 break;
             }
 
