@@ -42,6 +42,21 @@ void bubbleSort(vector<int> &nums) {
     }
 }
 
+void insertionSort(vector<int> &nums) {
+    int curr;
+    int prev;
+    for (int i = 1; i < nums.size(); i++) {
+        curr = nums[i];
+        prev = i-1;
+
+        while (prev >= 0 && nums[prev] > curr) {
+            nums[prev+1] = nums[prev];
+            prev--;
+        }
+        nums[prev+1] = curr;
+    }
+}
+
 void print(vector<int> &nums) {
     for (int i : nums)
         cout << i << " ";
@@ -64,6 +79,15 @@ int main() {
 
     bubbleSort(n2);
     print(n2);
+
+    cout << endl;
+
+    cout << "Insertion Sort:" << endl;
+    vector<int> n3 = {12, 11, 13, 5, 6};
+    print(n3);
+
+    insertionSort(n3);
+    print(n3);
 
     return 0;
 }

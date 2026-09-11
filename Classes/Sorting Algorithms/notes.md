@@ -41,7 +41,7 @@ The algorithms may also differ according to output requirements.
 
 - [Selection Sort](#i-selection-sort)
 - [Bubble Sort](#ii-bubble-sort)
-- Insertion Sort
+- [Insertion Sort](#iii-insertion-sort)
 - Merge Sort
 - Quick Sort
 
@@ -144,5 +144,64 @@ void bubbleSort(vector<int> &nums) {
 ### Disadvantages:
 
 - Slow for large datasets: the time complexity of `O(n^2)`, it is inefficient for big arrays
+
+[↑ Back to algorithms list](#5-sorting-algorithms)
+
+---
+
+## III. Insertion Sort
+
+- Is a simple sorting algorithm that works by iteratively inserting each element of an unsorted list into its correct position in a sorted portion of the list.
+- It is like sorting playing cards in your hands. You split the cards into two groups:
+  - Sorted Cards
+  - Unsorted Cards
+- Then, you pick a card from the unsorted group and put it in the right place in the sorted group.
+
+1. It starts with the second element (`i = 1`) of the list as the first element is assumed to be sorted.
+2. Compare the second element with the first element if the second element is smaller then swap them.
+3. Move to the third element, compare it with the first two elements, and put it in its correct position.
+4. Repeat the process until the array is sorted.
+
+![Insertion Sort 1](./images/insertion-sort-eg/1.png)
+![Insertion Sort 2](./images/insertion-sort-eg/2.png)
+![Insertion Sort 3](./images/insertion-sort-eg/3.png)
+![Insertion Sort 4](./images/insertion-sort-eg/4.png)
+![Insertion Sort 5](./images/insertion-sort-eg/5.png)
+
+```cpp
+void insertionSort(vector<int> &nums) {
+    int curr;
+    int prev;
+    for (int i = 1; i < nums.size(); i++) {
+        curr = nums[i];
+        prev = i-1;
+
+        while (prev >= 0 && nums[prev] > curr) {
+            nums[prev+1] = nums[prev];
+            prev--;
+        }
+        nums[prev+1] = curr;
+    }
+}
+```
+
+**Time Complexity: `O(n^2)`**
+
+**Space Complexity: `O(1)`**
+
+**Best Case (array is already ordered): `O(n)`**
+
+### Advantages:
+
+- Stable sorting algorithm.
+- Efficient for small lists and nearly sorted lists.
+- Space-efficient as it is an in-place algorithm.
+
+### Disadvantages:
+
+- Inefficient for large datasets, time complexity = `O(n^2)`
+- Too many comparisons and shifts.
+- Not suitable for random/unsorted data.
+- Recursive inefficiency (if implemented recursively), Recursive versions of Insertion Sort can quickly cause stack overflow for large `n`.
 
 [↑ Back to algorithms list](#5-sorting-algorithms)

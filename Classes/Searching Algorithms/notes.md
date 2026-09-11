@@ -52,7 +52,7 @@ int binarySearch(vector<int> &nums, int target) {
     int mid;
 
     while (low <= high) {
-        mid = (high - low) / 2;
+        mid = low + (high - low) / 2;
 
         if (nums[mid] == target) {
             return mid;
@@ -62,6 +62,8 @@ int binarySearch(vector<int> &nums, int target) {
             high = mid - 1;
         }
     }
+
+    return -1;
 }
 ```
 
