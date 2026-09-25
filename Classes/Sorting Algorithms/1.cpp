@@ -57,6 +57,52 @@ void insertionSort(vector<int> &nums) {
     }
 }
 
+void merge(vector<int> &nums, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    vector<int> L(n1), R(n2);
+
+    for (int i = 0; i < n1; i++)
+        L[i] = nums[i+left];
+
+    for (int j = 0; j < n2; j++)
+        R[j] = nums[j+mid+1];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            nums[k] = L[i];
+            i++;
+        } else {
+            nums[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        nums[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        nums[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(vector<int> &nums, int left, int right) {
+    if (left >= right)
+        return;
+
+    int mid = (left + right) / 2;
+    mergeSort(nums, left, mid);
+    mergeSort(nums, mid+1, right);
+    merge(nums, left, mid, right);
+}
+
 void print(vector<int> &nums) {
     for (int i : nums)
         cout << i << " ";
@@ -88,6 +134,15 @@ int main() {
 
     insertionSort(n3);
     print(n3);
+
+    cout << endl;
+
+    cout << "Merge Sort:" << endl;
+    vector<int> n4 = {38, 27, 43, 10};
+    print(n4);
+
+    mergeSort(n4, 0, n4.size() - 1);
+    print(n4);
 
     return 0;
 }

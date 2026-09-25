@@ -42,7 +42,7 @@ The algorithms may also differ according to output requirements.
 - [Selection Sort](#i-selection-sort)
 - [Bubble Sort](#ii-bubble-sort)
 - [Insertion Sort](#iii-insertion-sort)
-- Merge Sort
+- [Merge Sort](#iv-merge-sort)
 - Quick Sort
 
 ---
@@ -203,5 +203,95 @@ void insertionSort(vector<int> &nums) {
 - Too many comparisons and shifts.
 - Not suitable for random/unsorted data.
 - Recursive inefficiency (if implemented recursively), Recursive versions of Insertion Sort can quickly cause stack overflow for large `n`.
+
+[↑ Back to algorithms list](#5-sorting-algorithms)
+
+---
+
+## IV. Merge Sort
+
+- A popular sorting algorithm known for its efficiency and stability.
+- It works by recursively dividing the input list into two halves, recursively sorting the two halves and finally merging them back together to obtain the sorted list.
+
+![Merge Sort Example](./images/merge-sort-eg.jpg)
+
+1. **Divide:** Divide the list or array recursively into two halves until it can no more be divided.
+2. **Conquer:** Each subarray is sorted individually using the merge sort algorithm.
+3. **Merge:** The sorted subarrays are merged back together in sorted order. The process continues until all elements from both subarrays have been merged.
+
+![Step 1](./images/merge-sort-eg/1.png)
+![Step 2](./images/merge-sort-eg/2.png)
+![Step 3](./images/merge-sort-eg/3.png)
+![Step 4](./images/merge-sort-eg/4.png)
+
+```cpp
+void mergeSort(vector<int> &nums, int left, int right) {
+    if (left >= right)
+        return;
+
+    int mid = (left + right) / 2;
+    mergeSort(nums, left, mid);
+    mergeSort(nums, mid+1, right);
+    merge(nums, left, mid, right);
+}
+```
+
+where, `merge(nums, left, mid, right)` is:
+
+```cpp
+void merge(vector<int> &nums, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    vector<int> L(n1), R(n2);
+
+    for (int i = 0; i < n1; i++)
+        L[i] = nums[i+left];
+
+    for (int j = 0; j < n2; j++)
+        R[j] = nums[j+mid+1];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            nums[k] = L[i];
+            i++;
+        } else {
+            nums[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        nums[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        nums[k] = R[j];
+        j++;
+        k++;
+    }
+}
+```
+
+**Time Complexity: `O(n log n)`**
+
+**Space Complexity: `O(n)`**
+
+**Best Case (array is already ordered): `O(n log n)`**
+
+### Advantages:
+
+- Stability: It preserves the relative order of elements with equal values.
+- Guaranteed Worst-Case Performance: With a worst-case time complexity of `O(n log n)`, Merge Stort remains efficient even for large datasets.
+- Simplicity: Its divide-and-conquer strategy makes the algorithm conceptually straightforward.
+- Parallelism: Since subarrays are processed independently
+
+### Disadvantages:
+
+- Space Complexity: It needs extra memory to hold temporary subarrays during the merge setup.
+- Not In-Place: Unlike in-place algoriths, Merge Sort requires additional space to store intermediate results, which can be a drawback when memory is limited.
 
 [↑ Back to algorithms list](#5-sorting-algorithms)
