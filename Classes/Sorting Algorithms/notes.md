@@ -20,7 +20,7 @@ The algorithms may also differ according to output requirements.
 - Searching algorithms: sorting is essential for search methods like binary search, where data must be ordered.
 - Data Management: sorted data is easier to search, retrieve, and analyze.
 - Database optimization: databases often keep records sorted by primary index, improving query speed and performance.
-- Machine Learning: sorting is used during data preprocessing ro prepare datasets for training models.
+- Machine Learning: sorting is used during data preprocessing to prepare datasets for training models.
 - Operating Systems: sorting algorithms assist with task scheduling, memory management, and file system organization.
 
 ## Advantages
@@ -37,13 +37,33 @@ The algorithms may also differ according to output requirements.
 - Algorithm selection: choosing the right sorting algorithm for a specific
 - Alternatives to sorting: in many cases, hashing is more efficient than sorting
 
-## 5 sorting algorithms:
+## Sorting Properties:
 
-- [Selection Sort](#i-selection-sort)
-- [Bubble Sort](#ii-bubble-sort)
-- [Insertion Sort](#iii-insertion-sort)
-- [Merge Sort](#iv-merge-sort)
-- Quick Sort
+- **Stable:** A sorting algorithm is stable if two elements with the same value keep their original relative order after sorting.
+  - Example: `[4a, 5, 3, 4b, 2] → [2, 3, 4a, 4b, 5]`
+  - This is useful when sorting objects by multiple attributes.
+
+- **In-place:** A sorting algorithm is in-place if it sorts the elements using only a small amount of additional memory, without requiring another data structure proportional to the input size.
+  - Usually considered `O(1)` auxiliary space, although recursive algorithms such as Quick Sort may require additional stack space.
+  - Example: Selection Sort modifies the original array directly.
+
+- **Adaptive:** A sorting algorithm is adaptive if its performance improves when the input is already partially sorted or nearly sorted.
+  - Example: Insertion Sort can run in `O(n)` when the list is already sorted.
+  - Bubble Sort can also be adaptive when implemented with an early-termination check.
+
+## 5 Sorting Algorithms:
+
+| Algorithm                                 | Best         | Average      | Worst        | Space                         | Stable | In-place | Adaptive | Strategy         |
+| ----------------------------------------- | ------------ | ------------ | ------------ | ----------------------------- | :----: | :------: | :------: | ---------------- |
+| **[Selection Sort](#i-selection-sort)**   | `O(n²)`      | `O(n²)`      | `O(n²)`      | `O(1)`                        |   ❌   |    ✅    |    ❌    | Selection        |
+| **[Bubble Sort](#ii-bubble-sort)\***      | `O(n)`       | `O(n²)`      | `O(n²)`      | `O(1)`                        |   ✅   |    ✅    |    ✅    | Adjacent swaps   |
+| **[Insertion Sort](#iii-insertion-sort)** | `O(n)`       | `O(n²)`      | `O(n²)`      | `O(1)`                        |   ✅   |    ✅    |    ✅    | Insertion        |
+| **[Merge Sort](#iv-merge-sort)**          | `O(n log n)` | `O(n log n)` | `O(n log n)` | `O(n)`                        |   ✅   |    ❌    |    ❌    | Divide & Conquer |
+| **[Quick Sort](#v-quick-sort)**           | `O(n log n)` | `O(n log n)` | `O(n²)`      | `O(log n)` avg / `O(n)` worst |   ❌   |   ✅\*   |    ❌    | Divide & Conquer |
+
+\* Bubble Sort has `O(n)` best-case complexity when early termination is implemented (e.g., `checkSwap`).
+
+\* Quick Sort is considered in-place because it does not require an auxiliary array, but its recursion uses additional stack space.
 
 ---
 
@@ -293,5 +313,86 @@ void merge(vector<int> &nums, int left, int mid, int right) {
 
 - Space Complexity: It needs extra memory to hold temporary subarrays during the merge setup.
 - Not In-Place: Unlike in-place algoriths, Merge Sort requires additional space to store intermediate results, which can be a drawback when memory is limited.
+
+[↑ Back to algorithms list](#5-sorting-algorithms)
+
+---
+
+# V. Quick Sort
+
+- It follows the divide-and-conquer strategy.
+- The algorithm selects a pivot element and rearranges the list so that all elements smaller than the pivot appear on its left, and all greater elements on its right.
+
+1. Choose a Pivot: select an element from the list to serve as the pivot. The pivot can be chosen in different ways (e.g. first element, last element, a random element, or the median).
+2. Partition the List: rearrange the array so that all elements smaller than the pivot are placed on its left, and all elements greater than the pivot are placed on its right. After partitioning, the pivot is in correct sorted position. and its index is identified.
+3. Recursive Calls: apply the same process recursively to the two sub-arrays (the portions on the left and right of the pivot).
+4. Base Case: the recursion ends when a sub-array has only one element (or is empty).
+
+![Step 1](./images/quick-sort-eg/1.png)
+![Step 2](./images/quick-sort-eg/2.png)
+![Step 3](./images/quick-sort-eg/3.png)
+![Step 4](./images/quick-sort-eg/4.png)
+![Step 5](./images/quick-sort-eg/5.png)
+![Step 6](./images/quick-sort-eg/6.png)
+![Step 7](./images/quick-sort-eg/7.png)
+
+```cpp
+void quickSort(vector<int> &nums, int low, int high) {
+    if (low >= high)
+        return;
+
+    int pi = partition(nums, low, high);
+    quickSort(nums, low, pi-1);
+    quickSort(nums, pi+1, high);
+}
+```
+
+where, `partition(nums, low, high)` is:
+
+```cpp
+int partition(vector<int> &nums, int low, int high) {
+    int pivot = nums[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (nums[j] < pivot) {
+            i++;
+            swap(nums[i], nums[j]);
+        }
+    }
+
+    swap(nums[i+1], nums[high]);
+
+    return i+1;
+}
+```
+
+#### Time Complexity:
+
+- **Best Case (pivot element divides the array into two equal halves): `O(n log n)`**
+
+- **Average Case (pivot divides the array into two parts, but not equal): `O(n log n)`**
+
+- **Worst Case (smallest or largest element is always chosen as the pivot, such as, sorted arrays): `O(n^2)`**
+
+#### Space Complexity:
+
+- **Worst Case (the recursion tree becomes unbalanced): `O(n)`**
+
+- **Best Case (the recursion tree is balanced): `O(log n)`**
+
+### Advantages:
+
+- It uses the divide-and-conquer approach, which simplifies problem solving.
+- It performs very well on large data sets.
+- It has low memory overhead, since it works mostly in place.
+- It is cache-friendly, as it sorts directly within the array witthout needing extra copies.
+- It is one of the fastest general-purpose sorting algorithms when stability is not required.
+
+### Disadvantages:
+
+- Worst Case: it can take `O(n^2)` time if the pivot is chosen poorly.
+- Not good for small data: for small inputs, simpler algorithms like [Insertion Sort](#iii-insertion-sort) usually perform better.
+- Not Stable: it does not preserve the relative order of equal elements, since swapping is based only on the pivot's position, not on their original order.
 
 [↑ Back to algorithms list](#5-sorting-algorithms)

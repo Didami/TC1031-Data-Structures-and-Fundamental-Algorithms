@@ -1,8 +1,9 @@
 /*
-    Diego Flores Álvarez - A01788809
-    Deliever date: 25/09/26
-
     Activity 1.4 - Search and Sort algorithms
+    Description: Application that implements Selection, Bubble, Insertion and Merge Sort,
+    as well as Sequential and Binary Search algorithms using a vector<int>.
+    Author: Diego Flores Álvarez - A01788809
+    Delivery date: 25/09/26
 */
 
 #include <iostream>
@@ -13,24 +14,25 @@ using namespace std;
 class List {
     private:
     vector<int> nums;
+    vector<int> sorted;
 
     // === Sorting Algorithms ===
     // == 1. Selection Sort ==
 
     /// It sorts an array by repeatedly selecting the smallest or largest element from the unsorted portion and swapping elements. Time Complexity: `O(n^2)`. Space Complexity: `O(1)`.
     void selectionSort() {
-        int n = nums.size();
+        int n = sorted.size();
         int min;
 
         for (int i = 0; i < n - 1; i++) {
             min = i;
 
             for (int j = i + 1; j < n; j++) {
-                if (nums[j] < nums[min])
+                if (sorted[j] < sorted[min])
                     min = j;
             }
 
-            swap(nums[i], nums[min]);
+            swap(sorted[i], sorted[min]);
         }
     }
 
@@ -38,15 +40,15 @@ class List {
 
     /// It works by repeatedly comparing and swapping adjacent elements if they are in the wrong order. Time Complexity: `O(n^2)`. Space Complexity: `O(1)`.
     void bubbleSort() {
-        int n = nums.size();
+        int n = sorted.size();
         bool checkSwap;
 
         for (int i = 0; i < n - 1; i++) {
             checkSwap = false;
 
             for (int j = 0; j < n - i - 1; j++) {
-                if (nums[j] > nums[j + 1]) {
-                    swap(nums[j], nums[j + 1]);
+                if (sorted[j] > sorted[j + 1]) {
+                    swap(sorted[j], sorted[j + 1]);
                     checkSwap = true;
                 }
             }
@@ -64,15 +66,15 @@ class List {
         int prev;
 
         for (int i = 1; i < nums.size(); i++) {
-            curr = nums[i];
+            curr = sorted[i];
             prev = i - 1;
 
-            while (prev >= 0 && nums[prev] > curr) {
-                nums[prev + 1] = nums[prev];
+            while (prev >= 0 && sorted[prev] > curr) {
+                sorted[prev + 1] = sorted[prev];
                 prev--;
             }
 
-            nums[prev + 1] = curr;
+            sorted[prev + 1] = curr;
         }
     }
 
@@ -128,6 +130,7 @@ class List {
 
     /// Iterates over all the elements of the array and check if the current element is equal to the target element. Time Complexity: `O(n)`. Space Complexity: `O(1)`.
     int sequentialSearch(int target) {
+        // use `nums` as sorted list is not necessary
         for (int i = 0; i < nums.size(); i++) {
             if (nums[i] == target)
                 return i;
@@ -140,16 +143,17 @@ class List {
 
     /// The list must be sorted. It works by dividing the search space into two halves by finding the middle index. The middle element is compared with the `target`. If it is equal, the middle index is returned. If it is less than the `target`, the right side is used for the next search. If it is greater, the left side is used for the next search. This process is continued until the key is found or the total search space is exhausted. Time Complexity: `O(log n)`. Space Complexity: `O(1)`.
     int binarySearch(int target) {
+        // use `sorted`
         int low = 0;
-        int high = nums.size() - 1;
+        int high = sorted.size() - 1;
 
         while (low <= high) {
             int mid = low + (high - low) / 2;
 
-            if (nums[mid] == target) {
+            if (sorted[mid] == target) {
                 return mid;
             } 
-            else if (target > nums[mid]) {
+            else if (target > sorted[mid]) {
                 low = mid + 1;
             } 
             else {
@@ -174,11 +178,12 @@ class List {
             cin >> num;
 
             nums.push_back(num);
+            sorted.push_back(num);
         }
     }
 
-    void print() {
-        for (int n : nums) {
+    void printSorted() {
+        for (int n : sorted) {
             cout << n << " ";
         }
 
@@ -186,6 +191,7 @@ class List {
     }
 
     void search(int target) {
+        // Sequential search
         int index = sequentialSearch(target);
         if (index == -1) {
             cout << "ELEMENT " << target << " WAS NOT FOUND." << endl;
@@ -196,8 +202,9 @@ class List {
 
         cout << endl;
 
+        // Binary search
         cout << "⚠️ In order to use Binary Search, the list must be sorted." << endl;
-        sort(); // sort before searching
+        sort(); // ask to sort before searching
         cout << "-> USING BINARY SEARCH: " << "ELEMENT " << target << " FOUND AT INDEX: " << binarySearch(target) << endl;
     }
 
@@ -215,25 +222,25 @@ class List {
             case 1:
                 selectionSort();
                 cout << "SORTED (USING SELECTION): ";
-                print();
+                printSorted();
                 break;
 
             case 2:
                 bubbleSort();
                 cout << "SORTED (USING BUBBLE): ";
-                print();
+                printSorted();
                 break;
 
             case 3:
                 insertionSort();
                 cout << "SORTED (USING INSERTION): ";
-                print();
+                printSorted();
                 break;
 
             case 4:
-                mergeSort(0, nums.size() - 1);
+                mergeSort(0, sorted.size() - 1);
                 cout << "SORTED (USING MERGE): ";
-                print();
+                printSorted();
                 break;
 
             default:
@@ -255,6 +262,7 @@ int main() {
 
         cout << "Enter an option: ";
         cin >> option;
+        cout << endl;
 
         switch (option) {
             case 1: {
