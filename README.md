@@ -6,12 +6,12 @@ Repository containing my class notes, exercises, examples, and implementations f
 
 ## Contents
 
-- Data Structures
-- Searching Algorithms
-- Sorting Algorithms
-- Recursive Functions
-- Algorithm Complexity
-- Activities and exercises
+- [Data Structures](./Classes/Data%20Structures/)
+- [Searching Algorithms](./Classes/Searching%20Algorithms/notes.md)
+- [Sorting Algorithms](./Classes/Sorting%20Algorithms/notes.md)
+- [Recursive Functions](./Activities/1.1%20-%20recursive%20functions/)
+- [Algorithm Complexity](./Classes/complexity.md)
+- [Activities and exercises](./Activities/)
 - C++ implementations
 
 ## Requirements
