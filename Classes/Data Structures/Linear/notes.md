@@ -31,7 +31,7 @@
 
 - [Arrays](#i-array)
 - [Stacks](#ii-stack)
-- Queues
+- [Queues](#iii-queue)
 - Linked Lists
 
 ---
@@ -153,6 +153,120 @@ class Stack {
 
     int size() {
         return top+1;
+    }
+};
+```
+
+---
+
+## III. Queue:
+
+- A queue is a linear data structure based on the First-In-First-Out (FIFO) principle, meaning the element inserted first is also the first to be removed.
+
+![Queue Diagram](./images/queue-diagram.png)
+
+### Queue operations:
+
+- `push()` **(Enqueue)**: inserts an element at the rear (end) of the queue
+- `pop()` **(Dequeue)**: removes the first (front) element from the queue
+- `front()`: returns the element at the front of the queue without removing it
+- `size()`: returns the size of the queue
+- `empty()`: checks whether the queue is empty
+
+e.g:
+
+```cpp
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+void print(queue<int> &q) {
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+}
+
+int main() {
+    queue<int> q;
+    q.push(10);
+    q.push(25);
+    q.push(20);
+
+    cout << q.size() << endl;
+    cout << "Front: " << q.front() << endl;
+    cout << "Rear: " << q.back() << endl;
+
+    print(q);
+}
+```
+
+### C++ Implementation:
+
+```cpp
+#define max 100
+
+template <typename T>
+class Queue {
+    private:
+    T queue_arr[max];
+    int front;
+    int rear;
+
+    public:
+    Queue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    bool isFull() {
+        return rear == max-1;
+    }
+
+    void enqueue(T value) {
+        if (isFull()) {
+            cout << "The queue is full." << endl;
+            return;
+        }
+
+        if (isEmpty())
+            front = 0;
+
+        rear++;
+        queue_arr[rear] = value;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "The queue is empty." << endl;
+            return;
+        }
+
+        front++;
+    }
+
+    T Front() {
+        if (isEmpty())
+            return T();
+        return queue_arr[front];
+    }
+
+    T Rear() {
+        if (isEmpty())
+            return T();
+        return queue_arr[rear];
+    }
+
+    int size() {
+        if (isEmpty())
+            return 0;
+        return rear - front + 1;
     }
 };
 ```
