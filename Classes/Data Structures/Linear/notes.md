@@ -29,10 +29,10 @@
 
 ## Types:
 
-- [Arrays](#i-array)
-- [Stacks](#ii-stack)
-- [Queues](#iii-queue)
-- Linked Lists
+- ### [Arrays](#i-array)
+- ### [Stacks](#ii-stack)
+- ### [Queues](#iii-queue)
+- ### [Linked Lists](#iv-linked-list)
 
 ---
 
@@ -55,6 +55,8 @@ Elements: `[5, 10, 20, 25, 30]`
 - **Accessing elements:** `O(1)`
 - **Insertion / Deletion:** appending/deleting an element to the end of an array is usually `O(1)` but insetion at the beginning or any specific index takes `O(n)` time because it requires shifting all of the elements.
 - **Searching:** Linear search takes `O(n)`, but other algorithms like binary search (in sorted arrays) take `O(log n)`.
+
+[↑ Back to LDS Types](#types)
 
 ---
 
@@ -156,6 +158,8 @@ class Stack {
     }
 };
 ```
+
+[↑ Back to LDS Types](#types)
 
 ---
 
@@ -270,3 +274,256 @@ class Queue {
     }
 };
 ```
+
+[↑ Back to LDS Types](#types)
+
+---
+
+## IV. Linked List:
+
+- It resembles a chain of nodes. Each node contains two parts: a data field to store the value and a link (reference) to the next node in the sequence.
+- Linked lists are not stored inn contiguous memory locations, allowing for dynamic memory allocation and flexible insertion or deletion of elements.
+
+![Linked List Diagram](./images/linked-list-diagram.png)
+
+- Node: Each element in a linked list is stored inside a node, which has two parts:
+  - Data: Holds the actual value of the element.
+  - Next Pointer (Link): Points to the next node in the list.
+- Head: The first node of the linked list. It acts as the entry point for accessing and traversing the list.
+- Tail: The last node of the linked list. Its next pointer is typically set to NULL, indicating the end of the list.
+
+### Types:
+
+#### Singly Linked List:
+
+- Each node contains data and a pointer to the next node.
+- The last node points to NULL.
+- Traversal is only possible in one direction (from head to tail).
+
+![Singly Linked List Diagram](./images/singly-linked-list.png)
+
+#### Doubly Linked List:
+
+- Each node has two pointers: one pointing to the next node and one pointing to the previous node.
+- This bidirectional structure allows for efficient traversal in both directions.
+
+![Doubly Linked List Diagram](./images/doubly-linked-list.png)
+
+#### Circular Linked List:
+
+- A circular linked list is a type of linked list in which the first and the last nodes are also connected to each other to form a circle, there is no NULL at the end.
+
+![Circular Linked List Diagram](./images/circular-linked-list.png)
+
+### Linked List Operations:
+
+- Accessing Elements: Accessing a specific element in a linked list takes `O(n)` time since nodes are stored in non contigous locations so random access is if not possible.
+- Searching: Searching of a node in a linked list takes `O(n)` time as whole list needs to be traversed in worst case.
+- Insertion: Insertion takes `O(1)` time if we are at the position where we have to insert an element.
+- Deletion: Deletion takes `O(1)` time if we know the position of the element to be deleted.
+
+e.g:
+
+```cpp
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+int main() {
+    // Declare list and add elements
+    list<int> l;
+    l.push_front(5);
+    l.push_back(10);
+    l.push_back(15);
+    l.push_back(20);
+    l.push_front(3);
+
+    // Declare iterator ptr at beginning of the list
+    list<int>::iterator ptr = l.begin();
+
+    // Insert an element
+    // -50 at 2
+    advance(ptr, 2);
+    l.insert(ptr, -50);
+
+    // Replace an element
+    *ptr = 25000;
+
+    cout << "Head -> ";
+    for (ptr = l.begin(); ptr != l.end(); ptr++)
+        cout << *ptr << " -> ";
+    cout << "NULL" << endl;
+
+    // Accessing an element
+    cout << "Front -> " << l.front() << endl;
+    cout << "Back -> " << l.back() << endl;
+    cout << "The data of the fourth node is: " << *next(l.begin(), 3) << endl;
+
+    // Find a node
+    list<int>::iterator ptr2 = find(l.begin(), l.end(), 15);
+    if (ptr2 != l.end())
+        cout << "The node is found: " << *ptr2 << endl;
+    else
+        cout << "The node is not found." << endl;
+
+    return 0;
+}
+```
+
+OUTPUT:
+
+```
+Head -> 3 -> 5 -> -50 -> 25000 -> 15 -> 20 -> NULL
+Front -> 3
+Back -> 20
+The data of the fourth node is: 25000
+The node is found: 15
+```
+
+### C++ Implementation:
+
+```cpp
+template <typename T>
+class Node {
+    public:
+    T data;
+    Node<T> *next;
+
+    Node() {
+        data = 0;
+        next = nullptr;
+    }
+
+    Node(T data) {
+        this->data = data;
+        next = nullptr;
+    }
+};
+
+template <typename T>
+class LinkedList {
+    private:
+    Node<T> *head;
+
+    public:
+    LinkedList() {
+        head = nullptr;
+    }
+
+    void pushFront(T data) {
+        Node<T> *new_node = new Node(data);
+        if (head == nullptr)
+            head = new_node;
+        else {
+            new_node->next = head;
+            head = new_node;
+        }
+    }
+
+    void pushBack(T data) {
+        Node<T> *new_node = new Node<T>(data);
+
+        if (head == nullptr)
+            head = new_node;
+        else {
+            Node<T> *ptr = head;
+            while (ptr->next != nullptr)
+                ptr = ptr->next;
+            ptr->next = new_node;
+        }
+    }
+
+    void insert(T data, int index) {
+        Node<T> *new_node = new Node(data);
+        if (head == nullptr)
+            head = new_node;
+        else {
+            Node<T> *ptr = head;
+            for (int i = 0; i < index-1; i++)
+                ptr = ptr->next;
+
+            new_node->next = ptr->next;
+            ptr->next = new_node;
+        }
+    }
+
+    bool find(T data) {
+        if (head == nullptr) return false;
+
+        Node<T> *ptr = head;
+        while (ptr->next != nullptr) {
+            if (ptr->data == data) return true;
+            ptr = ptr->next;
+        }
+
+        return false;
+    }
+
+    void popFront() {
+        if (head == nullptr)
+            cout << "Linked List is empty" << endl;
+        else {
+            Node<T> *ptr = head;
+            head = head->next;
+            delete ptr;
+        }
+    }
+
+    void popBack() {
+        if (head == nullptr)
+            cout << "Linked List is empty" << endl;
+        else {
+            Node<T> *ptr = head;
+            Node<T> *prev;
+
+            while (ptr->next != nullptr) {
+                prev = ptr;
+                ptr = ptr->next;
+            }
+
+            prev->next = nullptr;
+            delete ptr;
+        }
+    }
+
+    void erase(T data) {
+        if (head == nullptr) {
+            cout << "Linked List is empty" << endl;
+            return;
+        }
+
+        Node<T> *ptr = head;
+        Node<T> *prev = nullptr;
+
+        while (ptr != nullptr && ptr->data != data) {
+            prev = ptr;
+            ptr = ptr->next;
+        }
+
+        if (ptr == nullptr) {
+            cout << "Data not found" << endl;
+            return;
+        }
+
+        if (prev == nullptr)
+            head = head->next;
+        else
+            prev->next = ptr->next;
+
+        delete ptr;
+    }
+
+    void print() {
+        Node<T> *ptr = head;
+        cout << "Head -> ";
+        while (ptr != nullptr) {
+            cout << ptr->data << " -> ";
+            ptr = ptr->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+```
+
+[↑ Back to LDS Types](#types)
