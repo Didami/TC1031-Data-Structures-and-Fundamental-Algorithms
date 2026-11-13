@@ -7,6 +7,8 @@ Repository containing my class notes, exercises, examples, and implementations f
 ## Contents
 
 - [Data Structures](./Classes/Data%20Structures/)
+  - [Linear](./Classes/Data%20Structures/Linear/)
+  - [Non-Linear](./Classes/Data%20Structures/Non-Linear/)
 - [Searching Algorithms](./Classes/Searching%20Algorithms/notes.md)
 - [Sorting Algorithms](./Classes/Sorting%20Algorithms/notes.md)
 - [Recursive Functions](./Activities/1.1%20-%20recursive%20functions/)
