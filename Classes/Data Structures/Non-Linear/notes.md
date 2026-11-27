@@ -8,7 +8,7 @@
 ## Types:
 
 - ### [Trees](#i-tree)
-- ### Graphs
+- ### [Graphs](#ii-graph)
 
 ---
 
@@ -505,5 +505,154 @@ Parent(i) = floor((i-1)/2)
 
 - Occurs when a node is inserted into the left subtree of the right child, which disturbs the balance factor of an ancestor node, making it right-heavy.
 - Fix: Perform a right rotation on the right child, followed by a left rotation on the node.
+
+[↑ Back to NLDS Types](#types)
+
+---
+
+## II. Graph
+
+- Graph Dara Structure is a collection of vertices (nodes) connected by edges. It's used to represent relationships between different entities.
+
+- It is used to show how different objects are related.
+
+- Graphs do not store in a fixed sequence.
+
+e.g: in a map, each city is a vertex, and each road connecting two cities is an edge. This helps represent how the cities are connected.
+
+### Components:
+
+- #### Vertices (Nodes):
+
+  Vertices are the basic units of a graph. They are also called nodes. Each vertex represents an object and can be labeled or unlabeled.
+
+- #### Edges (Arcs):
+  Edges are the connections between vertices.
+
+![Graph Components](./images/graph/components-diagram.png)
+
+### Types:
+
+- #### I. Based on the weight
+  1. **Weighted graphs:** each edge has a number (weight) that represents distance, cost or time.
+     ![Weighted Graph Diagram](./images/graph/weighted-diagram.png)
+  2. **Unweighted graphs:** all edges are considered equal and do not have extra values such as distance, cost or weight.
+     ![Unweighted Graph Diagram](./images/graph/unweighted-diagram.png)
+
+- #### II. Based on the direction
+  1. **Undirected graphs:** edges do not have any directuon. That is the nodes are unordered pairs in the definition of every edge.
+  2. **Directed graphs:** edges have direction. That is the nodes are ordered pairs in the definition of every edge.
+
+  ![Direction Comparison Diagram](./images/graph/directions-comp-diagram.png)
+
+### Representations:
+
+- A graph consists of a set of vertices (V) and a set of edges (E), and it is written as G(V, E).
+
+- Two most common ways to represent a graph
+
+#### 1. Adjacency Matrix:
+
+- A 2D array where each cell shows whether there is an edge between two vertices (using 0s and 1s).
+
+- If the graph has `n` vertices, we create a matrix called `adjMat[n][n]` with dimensions `n*n`
+
+![Adjacency Matrix Example](./images/graph/adjacency-matrix-eg.png)
+
+#### 2. Adjacency List:
+
+- A collection of lists where each vertex stores a list of its connected vertices.
+
+- An array of linked lists is used to store the edges between vertices. The size of the array is equal to the number of vertices (`n`).
+
+![Adjacency List Example](./images/graph/adjacency-list-eg.png)
+
+### C++ Implementation (using LinkedList):
+
+```cpp
+#include <iostream>
+#include <map>
+#include <list>
+
+using namespace std;
+
+template <typename T>
+class Graph {
+    private:
+    map<T, list<T>> mygraph;
+
+    public:
+    Graph() {}
+
+    void add_vertex(T v) {
+        mygraph[v] = {};
+    }
+
+    void add_edge(T v1, T v2) {
+        mygraph[v1].push_back(v2);
+        mygraph[v2].push_back(v1);
+    }
+
+    void print() {
+        for (auto &pair : mygraph){
+            cout << pair.first << ": ";
+            for (T neighbor: pair.second)
+                cout << neighbor << " ";
+            cout << endl;
+        }
+    }
+};
+```
+
+e.g:
+
+```cpp
+int main() {
+    Graph<int> g;
+    g.add_vertex(1);
+    g.add_vertex(2);
+    g.add_vertex(3);
+
+    g.add_edge(1, 2);
+    g.add_edge(1, 3);
+    g.add_edge(2, 3);
+
+    g.print();
+}
+```
+
+OUTPUT:
+
+```
+1: 2 3
+2: 1 3
+3: 1 2
+```
+
+### Depth First Search (DFS):
+
+- DFS is a graph traversal technique that starts from a source vertex and explores as far as possible along each path before backtracking.
+
+![Graph DFS Example](./images/graph/dfs-eg.png)
+
+### Breadth First Search (BFS):
+
+- BFS is a graph traversal algorithm that starts from a source node and explores the graph level by level.
+
+![Graph BFS Example](./images/graph/bfs-eg.png)
+
+### Dijkstra's Algorithm:
+
+- Dijkstra's algorithm is a greedy algorithm used to find the shortest path from a starting vertex (source) to all other vertices in a weighted graph.
+- Dijkstra's algorithm always chooses the node with the smallest distance first.
+
+#### Steps:
+
+1. Start from the source node.
+2. Always go to the closest unvisited node.
+3. Update distances to nearby nodes.
+4. Repeat until all nodes are visited.
+
+![Dijkstra's Algorithm Example](./images/graph/dijkstras-eg.png)
 
 [↑ Back to NLDS Types](#types)
